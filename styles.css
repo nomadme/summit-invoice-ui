@@ -251,7 +251,7 @@ svg:not([data-fluid]) {
   width: 40px; height: 40px;
   flex: 0 0 40px;
   display: grid; place-items: center;
-  border-radius: 10px;
+  border-radius: 50%;
   color: var(--slate-700);
   text-decoration: none;
 }
@@ -271,10 +271,14 @@ svg:not([data-fluid]) {
   padding-bottom: var(--safe-bottom);
   background: var(--white);
   border-top: 1px solid var(--slate-300);
-  display: flex;
+  display: none; /* never show on sign-in / wizard; JS adds .is-shown */
   align-items: stretch;
   z-index: 45;
   box-shadow: 0 -2px 12px rgba(15, 23, 42, 0.06);
+}
+
+.bottom-nav.is-shown {
+  display: flex;
 }
 
 @media (min-width: 768px) {
@@ -2232,8 +2236,11 @@ svg:not([data-fluid]) {
 }
 
 
-/* Never show bottom nav on sign-in */
-#view-login.active ~ #bottomNav,
+
+/* Sign-in / wizard: no footer nav */
+.bottom-nav:not(.is-shown),
 #bottomNav[hidden] {
   display: none !important;
+  pointer-events: none;
+  visibility: hidden;
 }

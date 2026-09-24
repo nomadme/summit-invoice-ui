@@ -80,8 +80,9 @@
     const showNav = VIEWS_WITH_NAV.has(name) && name !== "login" && name !== "new";
     if (nav) {
       nav.hidden = !showNav;
+      nav.classList.toggle("is-shown", showNav);
       nav.setAttribute("aria-hidden", showNav ? "false" : "true");
-      nav.style.display = showNav ? "" : "none";
+      nav.style.display = ""; // let CSS .is-shown own visibility
       $$("[data-nav]", nav).forEach((a) => {
         const isActive =
           a.dataset.nav === name ||
