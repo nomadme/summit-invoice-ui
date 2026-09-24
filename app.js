@@ -77,9 +77,11 @@
     });
 
     const nav = $("#bottomNav");
-    const showNav = VIEWS_WITH_NAV.has(name) && name !== "login";
+    const showNav = VIEWS_WITH_NAV.has(name) && name !== "login" && name !== "new";
     if (nav) {
       nav.hidden = !showNav;
+      nav.setAttribute("aria-hidden", showNav ? "false" : "true");
+      nav.style.display = showNav ? "" : "none";
       $$("[data-nav]", nav).forEach((a) => {
         const isActive =
           a.dataset.nav === name ||
