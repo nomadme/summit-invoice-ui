@@ -89,7 +89,23 @@ button {
   background: none;
 }
 
-img, svg { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; }
+svg:not([data-fluid]) {
+  display: block;
+  flex-shrink: 0;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.icon-btn svg,
+.qa-icon svg,
+.bottom-nav svg,
+.search-wrap svg,
+.back-btn svg {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  overflow: visible;
+}
 
 :focus-visible {
   outline: 2px solid var(--teal-500);
@@ -233,6 +249,7 @@ img, svg { display: block; max-width: 100%; }
 
 .icon-btn {
   width: 40px; height: 40px;
+  flex: 0 0 40px;
   display: grid; place-items: center;
   border-radius: 10px;
   color: var(--slate-700);
@@ -298,6 +315,9 @@ img, svg { display: block; max-width: 100%; }
 }
 
 .bottom-nav svg { width: 22px; height: 22px; }
+.bottom-nav .nav-item,
+.nav-fab .fab-btn { flex-shrink: 0; }
+.nav-fab .fab-btn svg { width: 24px; height: 24px; }
 
 .nav-fab {
   position: relative;
@@ -310,6 +330,7 @@ img, svg { display: block; max-width: 100%; }
 
 .nav-fab .fab-btn {
   width: 48px; height: 48px;
+  flex: 0 0 48px;
   border-radius: 50%;
   background: var(--accent);
   color: var(--white);
@@ -1472,11 +1493,18 @@ img, svg { display: block; max-width: 100%; }
 .quick-action .qa-icon {
   width: 40px;
   height: 40px;
+  flex: 0 0 40px;
   border-radius: 12px;
   background: var(--accent-soft);
   color: var(--accent);
   display: grid;
   place-items: center;
+}
+
+.qa-icon svg {
+  width: 20px;
+  height: 20px;
+  transform: none;
 }
 
 .attn-row, .queue-row {
