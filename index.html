@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a3d3f" />
+  <meta name="description" content="Summit Cabinet & Stone — Job invoicing for cabinet & countertop installers" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Summit Invoice — Cabinet & Stone</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell" id="app">
+
+    <!-- Soft PWA install hint -->
+    <div class="pwa-banner" id="pwaBanner" role="region" aria-label="Install app">
+      <div class="pwa-icon" aria-hidden="true">SC</div>
+      <div class="pwa-text">
+        <strong>Summit Invoice</strong>
+        Install for faster field access
+      </div>
+      <button type="button" class="btn-install" id="pwaInstall">Install</button>
+      <button type="button" class="btn-dismiss" id="pwaDismiss" aria-label="Dismiss">×</button>
+    </div>
+
+    <!-- ========== LOGIN ========== -->
+    <section class="view login-view no-nav" id="view-login" data-view="login">
+      <div class="login-brand">
+        <div class="login-logo">SC</div>
+        <h1>Summit Invoice</h1>
+        <p>Cabinet &amp; countertop job billing</p>
+      </div>
+      <form class="login-card" id="loginForm" autocomplete="on">
+        <h2>Sign in</h2>
+        <p class="lede">Summit Cabinet &amp; Stone</p>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input class="form-input" type="email" id="email" name="email" value="ops@summitcabinet.demo" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input class="form-input" type="password" id="password" name="password" value="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Continue to Dashboard</button>
+        <p class="form-hint" style="text-align:center;margin-top:14px">Prototype — any credentials work</p>
+      </form>
+      <p class="login-footer">Next.js · Supabase · Stripe · Resend</p>
+    </section>
+
+
+    <!-- ========== DASHBOARD ========== -->
+    <section class="view" id="view-dashboard" data-view="dashboard">
+      <header class="topbar teal">
+        <div class="title-block">
+          <h1>Good afternoon</h1>
+          <div class="subtitle">Summit Cabinet &amp; Stone</div>
+        </div>
+        <div class="actions">
+          <button type="button" class="icon-btn" aria-label="Notifications" data-toast="No new notifications">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          </button>
+          <a href="#settings" class="icon-btn" aria-label="Settings">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <div class="dash-greeting">
+          <div class="dash-greeting-text">
+            <div class="text-sm text-muted">Field ops overview</div>
+            <div class="fw-600" style="font-size:1.0625rem;margin-top:2px">Thursday, Sep 24</div>
+          </div>
+          <a href="#jobs" class="btn btn-ghost text-xs" style="min-height:36px;padding:6px 10px">All jobs →</a>
+        </div>
+
+        <!-- Key metrics -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-label">Outstanding</div>
+            <div class="metric-value">$14,280</div>
+            <div class="metric-sub">Across 4 jobs</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Due this week</div>
+            <div class="metric-value">$6,240</div>
+            <div class="metric-sub">Chen progress</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Open jobs</div>
+            <div class="metric-value">5</div>
+            <div class="metric-sub">1 estimate</div>
+          </div>
+          <div class="metric-card metric-alert">
+            <div class="metric-label">Overdue</div>
+            <div class="metric-value">1</div>
+            <div class="metric-sub">Hale holdback</div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="section-label">Quick actions</div>
+        <div class="quick-actions">
+          <a href="#new" class="quick-action">
+            <div class="qa-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+            <span>New job</span>
+          </a>
+          <button type="button" class="quick-action" data-toast="New estimate draft (stub)">
+            <div class="qa-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+            </div>
+            <span>New estimate</span>
+          </button>
+          <button type="button" class="quick-action" data-toast="Record payment (stub)">
+            <div class="qa-icon">
+              <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+            </div>
+            <span>Record payment</span>
+          </button>
+        </div>
+
+        <!-- Needs attention -->
+        <div class="section-label">Needs attention</div>
+        <div class="card stack-list">
+          <a href="#invoice" class="attn-row">
+            <div class="attn-dot danger" aria-hidden="true"></div>
+            <div class="attn-body">
+              <div class="attn-title">Overdue milestone</div>
+              <div class="attn-meta">Hale kitchen · Final holdback $1,850</div>
+            </div>
+            <span class="badge badge-overdue">Overdue</span>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="attn-row">
+            <div class="attn-dot warning" aria-hidden="true"></div>
+            <div class="attn-body">
+              <div class="attn-title">Estimate awaiting send</div>
+              <div class="attn-meta">Okonkwo guest bath · $4,890</div>
+            </div>
+            <span class="badge badge-estimate">Draft</span>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="attn-row" data-back-tab="changes">
+            <div class="attn-dot info" aria-hidden="true"></div>
+            <div class="attn-body">
+              <div class="attn-title">Change order unbilled</div>
+              <div class="attn-meta">Chen kitchen · CO #1 +$1,240</div>
+            </div>
+            <span class="badge badge-due">Unbilled</span>
+          </a>
+        </div>
+
+        <!-- Upcoming milestones / payments -->
+        <div class="section-label">Upcoming payments</div>
+        <div class="card stack-list">
+          <a href="#invoice" class="queue-row">
+            <div class="queue-date">
+              <div class="qd-day">28</div>
+              <div class="qd-mon">Sep</div>
+            </div>
+            <div class="queue-body">
+              <div class="queue-title">Chen · Progress payment</div>
+              <div class="queue-meta">Cabinets installed · 40%</div>
+            </div>
+            <div class="queue-amt">$6,240</div>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="queue-row">
+            <div class="queue-date">
+              <div class="qd-day">03</div>
+              <div class="qd-mon">Oct</div>
+            </div>
+            <div class="queue-body">
+              <div class="queue-title">Webb · Cabinets on site</div>
+              <div class="queue-meta">Deposit paid · next bill</div>
+            </div>
+            <div class="queue-amt">$2,100</div>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="queue-row">
+            <div class="queue-date muted">
+              <div class="qd-day">—</div>
+              <div class="qd-mon">TBD</div>
+            </div>
+            <div class="queue-body">
+              <div class="queue-title">Hale · Final holdback</div>
+              <div class="queue-meta">Awaiting punch sign-off</div>
+            </div>
+            <div class="queue-amt">$1,850</div>
+          </a>
+        </div>
+
+        <!-- Recent jobs -->
+        <div class="section-label flex-between" style="display:flex;align-items:center">
+          <span>Recent jobs</span>
+          <a href="#jobs" class="text-xs" style="font-weight:600">View all</a>
+        </div>
+        <div class="card stack-list recent-jobs-list">
+          <a href="#job" class="recent-row">
+            <div class="recent-main">
+              <div class="recent-client">David &amp; Mei Chen</div>
+              <div class="recent-title">Oak cabinets + quartz island</div>
+            </div>
+            <div class="recent-side">
+              <span class="badge badge-progress">In progress</span>
+              <div class="recent-amt">$6,240</div>
+            </div>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="recent-row">
+            <div class="recent-main">
+              <div class="recent-client">Marcus Webb</div>
+              <div class="recent-title">Laundry mudroom — Shaker</div>
+            </div>
+            <div class="recent-side">
+              <span class="badge badge-deposit">Deposit paid</span>
+              <div class="recent-amt">$2,100</div>
+            </div>
+          </a>
+          <div class="divider"></div>
+          <a href="#job" class="recent-row">
+            <div class="recent-main">
+              <div class="recent-client">Patricia Okonkwo</div>
+              <div class="recent-title">Bath vanity + quartz top</div>
+            </div>
+            <div class="recent-side">
+              <span class="badge badge-estimate">Estimate</span>
+              <div class="recent-amt">$4,890</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== JOBS LIST ========== -->
+    <section class="view" id="view-jobs" data-view="jobs">
+      <header class="topbar teal">
+        <div class="title-block">
+          <h1>Jobs</h1>
+          <div class="subtitle" id="jobsCountLabel">5 jobs</div>
+        </div>
+        <div class="actions">
+          <a href="#new" class="icon-btn" aria-label="New job" title="New job">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+          </a>
+        </div>
+      </header>
+
+      <div class="page-body jobs-toolbar-body">
+        <div class="search-wrap" style="margin-bottom:10px">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="form-input" type="search" id="jobsSearch" placeholder="Search client, job, address…" aria-label="Search jobs" autocomplete="off" />
+        </div>
+
+        <div class="jobs-filter-row">
+          <label class="sr-only" for="jobsTimeframe">Time frame</label>
+          <select class="form-select jobs-time-select" id="jobsTimeframe" aria-label="Time frame">
+            <option value="week">This week</option>
+            <option value="month" selected>This month</option>
+            <option value="90">Last 90 days</option>
+            <option value="all">All time</option>
+          </select>
+        </div>
+
+        <div class="filter-chips jobs-status-chips" role="tablist" aria-label="Filter by status">
+          <button type="button" class="chip active" data-jobs-status="all">All</button>
+          <button type="button" class="chip" data-jobs-status="in-progress">In progress</button>
+          <button type="button" class="chip" data-jobs-status="estimate">Estimates</button>
+          <button type="button" class="chip" data-jobs-status="complete">Complete</button>
+        </div>
+
+        <div class="jobs-table-wrap">
+          <table class="jobs-table" id="jobsTable">
+            <thead>
+              <tr>
+                <th scope="col">Client / Job</th>
+                <th scope="col">Status</th>
+                <th scope="col">Next milestone</th>
+                <th scope="col">Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="jobs-row" data-status="in-progress" data-updated="2026-09-20" data-search="david mei chen kitchen remodel oak cabinets quartz island 1847 maple ridge arlington">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">David &amp; Mei Chen</div>
+                    <div class="jt-title">Chen kitchen remodel — Oak + quartz</div>
+                    <div class="jt-addr">1847 Maple Ridge Dr, Arlington</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-progress">In progress</span></td>
+                <td>
+                  <div class="jt-ms">Progress payment</div>
+                  <div class="jt-amt">$6,240.00</div>
+                  <div class="jt-ms-date">Due Sep 28</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-09-20">Sep 20</time></td>
+              </tr>
+              <tr class="jobs-row" data-status="estimate" data-updated="2026-09-23" data-search="patricia okonkwo bath vanity quartz top guest bath 92 cedar bethesda">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">Patricia Okonkwo</div>
+                    <div class="jt-title">Bath vanity + quartz — Guest bath</div>
+                    <div class="jt-addr">92 Cedar Lane, Bethesda</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-estimate">Estimate</span></td>
+                <td>
+                  <div class="jt-ms">Estimate viewed</div>
+                  <div class="jt-amt">$4,890.00</div>
+                  <div class="jt-ms-date">Awaiting accept</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-09-23">Sep 23</time></td>
+              </tr>
+              <tr class="jobs-row" data-status="in-progress" data-updated="2026-09-18" data-search="marcus webb laundry mudroom shaker cabinets 4410 falls church">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">Marcus Webb</div>
+                    <div class="jt-title">Laundry mudroom — Shaker cabinets</div>
+                    <div class="jt-addr">4410 Falls Church Rd, Falls Church</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-deposit">Deposit paid</span></td>
+                <td>
+                  <div class="jt-ms">Cabinets on site</div>
+                  <div class="jt-amt">$2,100.00</div>
+                  <div class="jt-ms-date">Oct 3</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-09-18">Sep 18</time></td>
+              </tr>
+              <tr class="jobs-row" data-status="in-progress" data-updated="2026-09-22" data-search="james nora hale full kitchen soft-close butcher block 2208 clarendon arlington">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">James &amp; Nora Hale</div>
+                    <div class="jt-title">Full kitchen — Soft-close + butcher block</div>
+                    <div class="jt-addr">2208 Clarendon Blvd, Arlington</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-punch">Punch list</span></td>
+                <td>
+                  <div class="jt-ms">Final holdback</div>
+                  <div class="jt-amt">$1,850.00</div>
+                  <div class="jt-ms-date">On sign-off</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-09-22">Sep 22</time></td>
+              </tr>
+              <tr class="jobs-row" data-status="complete" data-updated="2026-09-12" data-search="elena rossi island calacatta quartz 15 potomac alexandria">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">Elena Rossi</div>
+                    <div class="jt-title">Island only — Calacatta quartz</div>
+                    <div class="jt-addr">15 Potomac Ave, Alexandria</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-complete">Complete</span></td>
+                <td>
+                  <div class="jt-ms">Final paid</div>
+                  <div class="jt-amt jt-amt-ok">$0 due</div>
+                  <div class="jt-ms-date">Sep 12</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-09-12">Sep 12</time></td>
+              </tr>
+              <tr class="jobs-row" data-status="complete" data-updated="2026-06-08" data-search="tom nguyen powder room quartz ledge 310 wilson arlington">
+                <td>
+                  <a href="#job" class="jobs-row-link">
+                    <div class="jt-client">Tom Nguyen</div>
+                    <div class="jt-title">Powder room — Quartz ledge</div>
+                    <div class="jt-addr">310 Wilson Blvd, Arlington</div>
+                  </a>
+                </td>
+                <td><span class="badge badge-complete">Complete</span></td>
+                <td>
+                  <div class="jt-ms">Closed</div>
+                  <div class="jt-amt jt-amt-ok">$0 due</div>
+                  <div class="jt-ms-date">Jun 8</div>
+                </td>
+                <td class="jt-date"><time datetime="2026-06-08">Jun 8</time></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state hidden" id="jobsEmpty">
+          <div class="empty-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>No jobs match</h3>
+          <p>Try another search, status, or time frame.</p>
+          <button type="button" class="btn btn-secondary btn-sm" id="jobsClearFilters">Clear filters</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== JOB DETAIL ========== -->
+    <section class="view" id="view-job" data-view="job">
+      <header class="topbar">
+        <a href="#jobs" class="back-btn" aria-label="Back to jobs">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div class="title-block">
+          <h1>Job detail</h1>
+          <div class="subtitle">JOB-2026-0847</div>
+        </div>
+        <div class="actions">
+          <button type="button" class="icon-btn" aria-label="More" data-toast="Share &amp; export coming soon">
+            <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="job-hero">
+        <div class="client-row">
+          <div>
+            <h2>David &amp; Mei Chen</h2>
+            <div class="addr">1847 Maple Ridge Dr, Arlington, VA 22207</div>
+            <div class="text-sm text-muted mt-8">Chen kitchen remodel — Oak cabinets + quartz island</div>
+          </div>
+          <span class="badge badge-progress">In progress</span>
+        </div>
+        <div class="progress-block">
+          <div class="progress-meta">
+            <span>Milestone progress</span>
+            <span>40% billed · 1 of 3 paid</span>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" style="width:40%"></div>
+          </div>
+          <div class="progress-steps">
+            <span class="done">Deposit ✓</span>
+            <span class="current">Progress</span>
+            <span>Final</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist" aria-label="Job sections">
+        <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="estimate">Estimate</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="milestones">Milestones</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="changes">Change orders</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" data-tab="photos">Photos</button>
+      </nav>
+
+      <div class="page-body">
+        <!-- Overview -->
+        <div class="tab-panel active" id="tab-overview" role="tabpanel">
+          <div class="overview-stat">
+            <div class="stat-tile">
+              <div class="lbl">Job total</div>
+              <div class="val">$16,840</div>
+              <div class="sub">Est. + CO #1</div>
+            </div>
+            <div class="stat-tile">
+              <div class="lbl">Collected</div>
+              <div class="val">$6,240</div>
+              <div class="sub">Deposit paid</div>
+            </div>
+            <div class="stat-tile">
+              <div class="lbl">Outstanding</div>
+              <div class="val">$10,600</div>
+              <div class="sub">2 milestones</div>
+            </div>
+            <div class="stat-tile">
+              <div class="lbl">Change orders</div>
+              <div class="val co-delta">+$1,240</div>
+              <div class="sub">1 approved</div>
+            </div>
+          </div>
+
+          <div class="section-label">Upcoming action</div>
+          <div class="card card-pad">
+            <div class="flex-between">
+              <div>
+                <div class="fw-600">Collect progress payment</div>
+                <div class="text-xs text-muted mt-8">Due Sep 28 · Cabinets installed</div>
+              </div>
+              <div class="fw-600" style="font-size:1.0625rem;color:var(--accent-text)">$6,240</div>
+            </div>
+            <div class="mt-12" style="display:flex;gap:8px">
+              <a href="#invoice" class="btn btn-stripe btn-sm" style="flex:1">Collect payment</a>
+              <button type="button" class="btn btn-secondary btn-sm" data-toast="Reminder emailed via Resend">Remind</button>
+            </div>
+          </div>
+
+          <div class="section-label">Recent activity</div>
+          <div class="card">
+            <div class="card-pad text-sm">
+              <div class="fw-600">Change order #1 approved</div>
+              <div class="text-xs text-muted">Sep 20 · Soft-close upgrade +$1,240</div>
+            </div>
+            <div class="divider"></div>
+            <div class="card-pad text-sm">
+              <div class="fw-600">Deposit invoice paid</div>
+              <div class="text-xs text-muted">Sep 8 · Stripe · $6,240.00</div>
+            </div>
+            <div class="divider"></div>
+            <div class="card-pad text-sm">
+              <div class="fw-600">Estimate accepted</div>
+              <div class="text-xs text-muted">Sep 5 · Client signed digitally</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estimate -->
+        <div class="tab-panel" id="tab-estimate" role="tabpanel">
+          <div class="flex-between mb-8">
+            <div>
+              <span class="badge badge-viewed">Viewed</span>
+              <span class="text-xs text-muted" style="margin-left:8px">EST-0847 · Sent Sep 3</span>
+            </div>
+          </div>
+
+          <div class="card card-pad">
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type mat">Mat</span> Oak shaker cabinets — base &amp; wall</div>
+                <div class="li-meta">Cost $4,200 · Markup 35% · Qty 1 set</div>
+              </div>
+              <div class="li-amt">$5,670.00</div>
+            </div>
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type mat">Mat</span> Calacatta Laza quartz — island + perimeter</div>
+                <div class="li-meta">Cost $2,800 · Markup 40% · 48 sq ft</div>
+              </div>
+              <div class="li-amt">$3,920.00</div>
+            </div>
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type mat">Mat</span> Hardware — soft-close hinges &amp; pulls</div>
+                <div class="li-meta">Cost $320 · Markup 30%</div>
+              </div>
+              <div class="li-amt">$416.00</div>
+            </div>
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type lab">Lab</span> Cabinet install &amp; leveling</div>
+                <div class="li-meta">16 hrs · $95/hr</div>
+              </div>
+              <div class="li-amt">$1,520.00</div>
+            </div>
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type lab">Lab</span> Template, fabricate &amp; set stone</div>
+                <div class="li-meta">Crew day rate</div>
+              </div>
+              <div class="li-amt">$2,850.00</div>
+            </div>
+            <div class="line-item">
+              <div>
+                <div class="li-name"><span class="line-type lab">Lab</span> Demo &amp; haul-away (existing cabinets)</div>
+                <div class="li-meta">Fixed</div>
+              </div>
+              <div class="li-amt">$1,224.00</div>
+            </div>
+
+            <div class="totals-block">
+              <div class="totals-row"><span>Materials (w/ markup)</span><span>$10,006.00</span></div>
+              <div class="totals-row"><span>Labor</span><span>$5,594.00</span></div>
+              <div class="totals-row"><span>Original estimate</span><span>$15,600.00</span></div>
+              <div class="totals-row"><span>Change orders</span><span class="co-delta">+$1,240.00</span></div>
+              <div class="totals-row grand"><span>Running job total</span><span>$16,840.00</span></div>
+              <p class="markup-note">Markup applied on materials only. Labor billed at crew rate. CO #1 rolled into upcoming milestones.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="tab-panel" id="tab-milestones" role="tabpanel">
+          <p class="text-sm text-muted mb-8">Tied to estimate EST-0847 · Change orders bill against upcoming milestones.</p>
+          <div class="timeline">
+            <div class="ms-item paid">
+              <div class="ms-dot" aria-hidden="true"></div>
+              <div class="ms-card">
+                <div class="ms-head">
+                  <div>
+                    <div class="ms-name">Deposit</div>
+                    <div class="ms-pct">40% of estimate · On contract</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="ms-amt">$6,240.00</div>
+                    <span class="badge badge-paid">Paid</span>
+                  </div>
+                </div>
+                <div class="ms-paid-meta">Paid Sep 8 via Stripe · INV-2401</div>
+              </div>
+            </div>
+
+            <div class="ms-item due">
+              <div class="ms-dot" aria-hidden="true"></div>
+              <div class="ms-card">
+                <div class="ms-head">
+                  <div>
+                    <div class="ms-name">Progress</div>
+                    <div class="ms-pct">40% · Cabinets installed · Incl. CO share</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="ms-amt">$6,240.00</div>
+                    <span class="badge badge-due">Due</span>
+                  </div>
+                </div>
+                <div class="text-xs text-muted mt-8">Due Sep 28, 2026 · Overdue in 4 days if unpaid</div>
+                <div class="ms-actions">
+                  <a href="#invoice" class="btn btn-stripe btn-sm" style="flex:1">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.809.752-1.369 1.988-1.369 1.917 0 2.601 1.3 2.601 1.3l1.651-1.026S15.072 4 12.977 4C10.072 4 8.2 5.582 8.2 7.72c0 2.319 1.901 3.337 4.626 4.302 2.455.865 2.95 1.669 2.95 2.727 0 .928-.821 1.688-2.274 1.688-2.205 0-3.092-1.657-3.092-1.657L8.7 15.96s1.205 2.04 4.248 2.04c2.984 0 5.038-1.613 5.038-4.066 0-2.504-1.984-3.58-4.01-4.784z"/></svg>
+                    Collect payment
+                  </a>
+                  <a href="#invoice" class="btn btn-secondary btn-sm">Preview</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="ms-item upcoming">
+              <div class="ms-dot" aria-hidden="true"></div>
+              <div class="ms-card">
+                <div class="ms-head">
+                  <div>
+                    <div class="ms-name">Final</div>
+                    <div class="ms-pct">20% + remaining CO · Punch complete</div>
+                  </div>
+                  <div style="text-align:right">
+                    <div class="ms-amt">$4,360.00</div>
+                    <span class="badge badge-upcoming">Upcoming</span>
+                  </div>
+                </div>
+                <div class="text-xs text-muted mt-8">Includes remaining $620 of CO #1 soft-close upgrade</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change orders -->
+        <div class="tab-panel" id="tab-changes" role="tabpanel">
+          <div class="co-note-banner">
+            <strong>How billing works:</strong> Approved change orders increase the running job total and are allocated to upcoming milestones (not retrospectively to paid deposits).
+          </div>
+
+          <!-- Toggle: has items vs empty via data; default shows one CO; empty demo via button -->
+          <div id="coList">
+            <div class="card card-pad">
+              <div class="flex-between">
+                <div>
+                  <div class="fw-600">CO #1 — Soft-close upgrade</div>
+                  <div class="text-xs text-muted mt-8">Approved Sep 20 · Bills to Progress + Final</div>
+                </div>
+                <div class="co-delta" style="font-size:1.0625rem">+$1,240</div>
+              </div>
+              <p class="text-sm text-muted mt-12">Upgrade all base cabinet drawers to Blum soft-close. Client requested after seeing sample.</p>
+              <div class="flex-between mt-12 text-xs">
+                <span class="badge badge-paid" style="text-transform:none">Approved</span>
+                <span class="text-muted">Job total now $16,840</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty-state hidden" id="coEmpty">
+            <div class="empty-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </div>
+            <h3>No change orders yet</h3>
+            <p>When the client adds scope mid-job, capture it here. Approved COs bump the job total and bill against upcoming milestones.</p>
+            <button type="button" class="btn btn-primary" id="openCoFromEmpty">Add change order</button>
+          </div>
+
+          <div class="btn-row" style="padding:16px 0 0">
+            <button type="button" class="btn btn-primary btn-block" id="openCoModal">Add change order</button>
+          </div>
+          <button type="button" class="btn btn-ghost btn-block text-xs" id="toggleCoEmpty">Preview empty state</button>
+        </div>
+
+        <!-- Photos -->
+        <div class="tab-panel" id="tab-photos" role="tabpanel">
+          <div class="photo-phase">
+            <h3>Before <button type="button" class="btn btn-ghost btn-sm" data-toast="Camera / gallery picker (prototype)">+ Add</button></h3>
+            <div class="photo-grid">
+              <div class="photo-thumb"><div class="ph ph-before">Existing<br/>cabinets</div></div>
+              <div class="photo-thumb"><div class="ph ph-before">Perimeter<br/>walls</div></div>
+              <button type="button" class="photo-add" data-toast="Add before photo">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add
+              </button>
+            </div>
+          </div>
+          <div class="photo-phase">
+            <h3>During <button type="button" class="btn btn-ghost btn-sm" data-toast="Camera / gallery picker (prototype)">+ Add</button></h3>
+            <div class="photo-grid">
+              <div class="photo-thumb"><div class="ph ph-during">Demo<br/>complete</div></div>
+              <div class="photo-thumb"><div class="ph ph-during">Cabinets<br/>set</div></div>
+              <div class="photo-thumb"><div class="ph ph-during">Template<br/>day</div></div>
+            </div>
+          </div>
+          <div class="photo-phase">
+            <h3>After <button type="button" class="btn btn-ghost btn-sm" data-toast="Camera / gallery picker (prototype)">+ Add</button></h3>
+            <div class="photo-grid">
+              <button type="button" class="photo-add" data-toast="Add after photo">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add
+              </button>
+              <button type="button" class="photo-add" data-toast="Add after photo" style="opacity:0.5" aria-hidden="true">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <button type="button" class="photo-add" data-toast="Add after photo" style="opacity:0.5" aria-hidden="true">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+            </div>
+            <p class="text-xs text-muted mt-8">After photos unlock once punch list is cleared — useful for final invoice proof.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sticky-cta" id="estimateCta" hidden>
+        <button type="button" class="btn btn-primary btn-block" data-toast="Estimate sent via Resend (prototype)">Send estimate</button>
+      </div>
+    </section>
+
+    <!-- ========== INVOICE PREVIEW ========== -->
+    <section class="view" id="view-invoice" data-view="invoice">
+      <header class="topbar">
+        <a href="#job" class="back-btn" aria-label="Back to job" data-back-tab="milestones">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div class="title-block">
+          <h1>Invoice preview</h1>
+          <div class="subtitle">Progress milestone · INV-2402</div>
+        </div>
+      </header>
+
+      <div class="page-body">
+        <div class="invoice-sheet">
+          <div class="inv-header">
+            <div class="inv-brand">
+              <div class="co-name">Summit Cabinet &amp; Stone</div>
+              <div class="co-meta">
+                8800 Industrial Park Blvd<br/>
+                Manassas, VA 20110<br/>
+                ops@summitcabinet.demo
+              </div>
+            </div>
+            <div class="inv-label">
+              <div class="big">INVOICE</div>
+              <div class="num">INV-2402</div>
+              <div class="text-xs text-muted mt-8">Sep 24, 2026</div>
+            </div>
+          </div>
+
+          <div class="inv-parties">
+            <div>
+              <div class="lbl">Bill to</div>
+              <div class="fw-600">David &amp; Mei Chen</div>
+              <div class="text-muted">1847 Maple Ridge Dr<br/>Arlington, VA 22207</div>
+            </div>
+            <div>
+              <div class="lbl">Job</div>
+              <div class="fw-600">JOB-2026-0847</div>
+              <div class="text-muted">Chen kitchen remodel<br/>Milestone: Progress (40%)</div>
+            </div>
+          </div>
+
+          <table class="inv-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="fw-600">Progress payment — cabinets installed</div>
+                  <div class="text-xs text-muted">40% of estimate EST-0847</div>
+                </td>
+                <td>$6,240.00</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="fw-600">CO #1 allocation (partial)</div>
+                  <div class="text-xs text-muted">Soft-close upgrade · billed to this milestone</div>
+                </td>
+                <td>$620.00</td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="fw-600 text-muted">Less: CO already in progress base</div>
+                  <div class="text-xs text-muted">Adjusted into $6,240 due</div>
+                </td>
+                <td class="text-muted">—</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="inv-totals">
+            <div class="totals-row"><span>Subtotal</span><span>$6,240.00</span></div>
+            <div class="totals-row"><span>Tax (materials, VA)</span><span>$0.00</span></div>
+            <div class="totals-row grand"><span>Amount due</span><span>$6,240.00</span></div>
+          </div>
+
+          <div class="inv-pay-bar">
+            <div class="due-lbl">Amount due · Due Sep 28, 2026</div>
+            <div class="due-amt">$6,240.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sticky-cta">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button type="button" class="btn btn-stripe btn-block" data-toast="Stripe Checkout link copied (prototype)">
+            Get pay link
+          </button>
+          <button type="button" class="btn btn-primary btn-block" data-toast="Invoice emailed via Resend">
+            Email invoice to client
+          </button>
+          <button type="button" class="btn btn-secondary btn-block" data-toast="PDF download (prototype)">
+            Download PDF
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CLIENTS ========== -->
+    <section class="view" id="view-clients" data-view="clients">
+      <header class="topbar teal">
+        <div class="title-block">
+          <h1>Clients</h1>
+          <div class="subtitle">5 active</div>
+        </div>
+      </header>
+      <div class="page-body">
+        <div class="search-wrap">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="form-input" type="search" placeholder="Search clients…" aria-label="Search clients" />
+        </div>
+
+        <div class="card">
+          <a href="#client" class="client-row-item card-link" style="border:none;box-shadow:none;border-radius:0">
+            <div class="client-avatar">DC</div>
+            <div class="client-info">
+              <div class="name">David &amp; Mei Chen</div>
+              <div class="meta">Arlington · 1 active job · $10,600 outstanding</div>
+            </div>
+            <svg class="client-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="divider"></div>
+          <a href="#client" class="client-row-item" style="color:inherit;text-decoration:none">
+            <div class="client-avatar">PO</div>
+            <div class="client-info">
+              <div class="name">Patricia Okonkwo</div>
+              <div class="meta">Bethesda · Estimate viewed</div>
+            </div>
+            <svg class="client-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="divider"></div>
+          <a href="#client" class="client-row-item" style="color:inherit;text-decoration:none">
+            <div class="client-avatar">MW</div>
+            <div class="client-info">
+              <div class="name">Marcus Webb</div>
+              <div class="meta">Falls Church · Deposit paid</div>
+            </div>
+            <svg class="client-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="divider"></div>
+          <a href="#client" class="client-row-item" style="color:inherit;text-decoration:none">
+            <div class="client-avatar">ER</div>
+            <div class="client-info">
+              <div class="name">Elena Rossi</div>
+              <div class="meta">Alexandria · Complete</div>
+            </div>
+            <svg class="client-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <div class="divider"></div>
+          <a href="#client" class="client-row-item" style="color:inherit;text-decoration:none">
+            <div class="client-avatar">JH</div>
+            <div class="client-info">
+              <div class="name">James &amp; Nora Hale</div>
+              <div class="meta">Arlington · Punch list</div>
+            </div>
+            <svg class="client-chevron" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CLIENT DETAIL PEEK ========== -->
+    <section class="view" id="view-client" data-view="client">
+      <header class="topbar">
+        <a href="#clients" class="back-btn" aria-label="Back to clients">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <div class="title-block">
+          <h1>Client</h1>
+        </div>
+      </header>
+      <div class="page-body">
+        <div class="card card-pad" style="text-align:center;padding-top:24px;padding-bottom:24px">
+          <div class="client-avatar" style="width:64px;height:64px;font-size:1.25rem;margin:0 auto 12px">DC</div>
+          <h2 style="font-size:1.25rem;font-weight:700">David &amp; Mei Chen</h2>
+          <p class="text-sm text-muted mt-8">david.chen@email.demo · (703) 555-0192</p>
+          <p class="text-sm text-muted">1847 Maple Ridge Dr, Arlington, VA 22207</p>
+        </div>
+
+        <div class="section-label">Jobs</div>
+        <a href="#job" class="card card-link job-card card-pad">
+          <div class="job-top">
+            <div>
+              <div class="client-name">Chen kitchen remodel</div>
+              <div class="job-title">Oak cabinets + quartz island</div>
+            </div>
+            <span class="badge badge-progress">In progress</span>
+          </div>
+          <div class="milestone-row">
+            <div class="milestone-label">Outstanding</div>
+            <div class="milestone-amt">$10,600.00</div>
+          </div>
+        </a>
+
+        <div class="section-label">Notes</div>
+        <div class="card card-pad text-sm text-muted">
+          Prefers text over email. Site access via side gate. Dog in backyard — call ahead.
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== NEW JOB (stub) ========== -->
+    <section class="view no-nav" id="view-new" data-view="new">
+      <header class="topbar">
+        <a href="#jobs" class="back-btn" aria-label="Close create job" id="wizardClose">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </a>
+        <div class="title-block">
+          <h1>New job</h1>
+          <div class="subtitle" id="wizardStepLabel">Step 1 of 5 · Client</div>
+        </div>
+      </header>
+
+      <!-- Sticky progress -->
+      <div class="wizard-progress" id="wizardProgress" aria-label="Create job progress">
+        <div class="wizard-track">
+          <div class="wizard-fill" id="wizardFill" style="width:20%"></div>
+        </div>
+        <ol class="wizard-steps">
+          <li class="wz-step current" data-wz="client"><span class="wz-num">1</span><span class="wz-lbl">Client</span></li>
+          <li class="wz-step" data-wz="details"><span class="wz-num">2</span><span class="wz-lbl">Details</span></li>
+          <li class="wz-step" data-wz="estimate"><span class="wz-num">3</span><span class="wz-lbl">Estimate</span></li>
+          <li class="wz-step" data-wz="milestones"><span class="wz-num">4</span><span class="wz-lbl">Billing</span></li>
+          <li class="wz-step" data-wz="review"><span class="wz-num">5</span><span class="wz-lbl">Review</span></li>
+        </ol>
+      </div>
+
+      <div class="page-body wizard-body">
+
+        <!-- STEP 1: Client -->
+        <div class="wizard-panel" id="wz-client" data-wz-panel="client">
+          <div class="section-label" style="margin-top:0">Select client</div>
+          <div class="search-wrap">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input class="form-input" type="search" id="wzClientSearch" placeholder="Search clients…" aria-label="Search clients" autocomplete="off" />
+          </div>
+
+          <div class="card" id="wzClientList">
+            <button type="button" class="client-pick" data-client-id="chen" data-name="David &amp; Mei Chen" data-phone="(703) 555-0192" data-email="david.chen@email.demo" data-address="1847 Maple Ridge Dr, Arlington, VA 22207" data-initials="DC">
+              <div class="client-avatar">DC</div>
+              <div class="client-info">
+                <div class="name">David &amp; Mei Chen</div>
+                <div class="meta">Arlington · 1 active job</div>
+              </div>
+              <span class="pick-check" aria-hidden="true"></span>
+            </button>
+            <div class="divider"></div>
+            <button type="button" class="client-pick" data-client-id="okonkwo" data-name="Patricia Okonkwo" data-phone="(301) 555-0144" data-email="p.okonkwo@email.demo" data-address="920 Elmwood Ave, Bethesda, MD 20814" data-initials="PO">
+              <div class="client-avatar">PO</div>
+              <div class="client-info">
+                <div class="name">Patricia Okonkwo</div>
+                <div class="meta">Bethesda · Estimate viewed</div>
+              </div>
+              <span class="pick-check" aria-hidden="true"></span>
+            </button>
+            <div class="divider"></div>
+            <button type="button" class="client-pick" data-client-id="webb" data-name="Marcus Webb" data-phone="(703) 555-0177" data-email="m.webb@email.demo" data-address="412 Oak Lane, Falls Church, VA 22046" data-initials="MW">
+              <div class="client-avatar">MW</div>
+              <div class="client-info">
+                <div class="name">Marcus Webb</div>
+                <div class="meta">Falls Church · Deposit paid</div>
+              </div>
+              <span class="pick-check" aria-hidden="true"></span>
+            </button>
+            <div class="divider"></div>
+            <button type="button" class="client-pick" data-client-id="rossi" data-name="Elena Rossi" data-phone="(703) 555-0110" data-email="elena.rossi@email.demo" data-address="55 King St, Alexandria, VA 22314" data-initials="ER">
+              <div class="client-avatar">ER</div>
+              <div class="client-info">
+                <div class="name">Elena Rossi</div>
+                <div class="meta">Alexandria · Complete</div>
+              </div>
+              <span class="pick-check" aria-hidden="true"></span>
+            </button>
+            <div class="divider"></div>
+            <button type="button" class="client-pick" data-client-id="hale" data-name="James &amp; Nora Hale" data-phone="(703) 555-0188" data-email="hale.home@email.demo" data-address="2200 N Glebe Rd, Arlington, VA 22207" data-initials="JH">
+              <div class="client-avatar">JH</div>
+              <div class="client-info">
+                <div class="name">James &amp; Nora Hale</div>
+                <div class="meta">Arlington · Punch list</div>
+              </div>
+              <span class="pick-check" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="empty-state hidden" id="wzClientEmpty">
+            <div class="empty-icon">
+              <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </div>
+            <h3>No clients match</h3>
+            <p>Try another name, or create a new client below.</p>
+          </div>
+
+          <div class="section-label">Or create new</div>
+          <button type="button" class="btn btn-secondary btn-block" id="wzToggleNewClient">
+            <span id="wzNewClientBtnLabel">+ New client</span>
+          </button>
+
+          <div class="card card-pad hidden mt-12" id="wzNewClientForm">
+            <div class="form-group">
+              <label for="wzNewName">Client name</label>
+              <input class="form-input" id="wzNewName" placeholder="e.g. Rivera bathroom vanity" autocomplete="name" />
+            </div>
+            <div class="form-group">
+              <label for="wzNewPhone">Phone</label>
+              <input class="form-input" id="wzNewPhone" type="tel" placeholder="(703) 555-0100" autocomplete="tel" />
+            </div>
+            <div class="form-group">
+              <label for="wzNewEmail">Email</label>
+              <input class="form-input" id="wzNewEmail" type="email" placeholder="name@email.com" autocomplete="email" />
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label for="wzNewAddress">Address</label>
+              <input class="form-input" id="wzNewAddress" placeholder="Street, city, state ZIP" autocomplete="street-address" />
+            </div>
+            <p class="form-hint">Tip: try “Sofia Rivera” for a demo homeowner.</p>
+          </div>
+        </div>
+
+        <!-- STEP 2: Details -->
+        <div class="wizard-panel hidden" id="wz-details" data-wz-panel="details">
+          <div class="form-group">
+            <label for="wzTitle">Job title</label>
+            <input class="form-input" id="wzTitle" placeholder="e.g. Rivera bathroom vanity" />
+          </div>
+
+          <div class="form-group">
+            <label>Job type</label>
+            <div class="type-chips" role="group" aria-label="Job type">
+              <button type="button" class="type-chip" data-job-type="cabinets">Cabinets</button>
+              <button type="button" class="type-chip" data-job-type="countertops">Countertops</button>
+              <button type="button" class="type-chip active" data-job-type="both">Both</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="check-row">
+              <input type="checkbox" id="wzSameAddress" checked />
+              <span>Site address same as client</span>
+            </label>
+          </div>
+          <div class="form-group" id="wzSiteWrap">
+            <label for="wzSiteAddress">Job site address</label>
+            <input class="form-input" id="wzSiteAddress" placeholder="Street, city, state ZIP" disabled />
+            <p class="form-hint" id="wzSiteHint">Using client address</p>
+          </div>
+
+          <div class="form-group">
+            <label for="wzInstallWindow">Target install window</label>
+            <input class="form-input" id="wzInstallWindow" placeholder="e.g. Week of Oct 20" />
+          </div>
+
+          <div class="form-group" style="margin-bottom:0">
+            <label for="wzNotes">Notes</label>
+            <textarea class="form-textarea" id="wzNotes" placeholder="Scope overview, access notes, dog in yard…"></textarea>
+          </div>
+        </div>
+
+        <!-- STEP 3: Estimate -->
+        <div class="wizard-panel hidden" id="wz-estimate" data-wz-panel="estimate">
+          <p class="text-sm text-muted mb-8">Optional — seed a few line items now, or start blank and fill later.</p>
+
+          <div class="estimate-mode-row">
+            <button type="button" class="est-mode-card active" data-est-mode="blank" id="wzEstBlank">
+              <div class="est-mode-title">Start blank</div>
+              <div class="est-mode-sub">Add lines later on the job</div>
+            </button>
+            <button type="button" class="est-mode-card" data-est-mode="template" id="wzEstTemplate">
+              <div class="est-mode-title">Use template</div>
+              <div class="est-mode-sub">Vanity / bath package</div>
+            </button>
+          </div>
+
+          <div id="wzEstimateEditor" class="hidden">
+            <div class="section-label">Line items</div>
+            <div class="card card-pad" id="wzLineItems">
+              <!-- filled by JS -->
+            </div>
+            <button type="button" class="btn btn-ghost btn-block mt-8" id="wzAddLine">+ Add line item</button>
+
+            <div class="card card-pad mt-12" id="wzEstTotals">
+              <div class="totals-row"><span>Materials (w/ markup)</span><span id="wzMatSub">$0.00</span></div>
+              <div class="totals-row"><span>Labor</span><span id="wzLabSub">$0.00</span></div>
+              <div class="totals-row grand"><span>Estimate total</span><span id="wzEstTotal">$0.00</span></div>
+              <p class="markup-note">Default markup 35% materials · labor at rate or fixed.</p>
+            </div>
+          </div>
+
+          <div class="co-note-banner mt-12" id="wzEstBlankNote">
+            You can skip seeding — the job opens as a <strong>draft estimate</strong> at $0. Add lines anytime from the Estimate tab.
+          </div>
+        </div>
+
+        <!-- STEP 4: Milestones -->
+        <div class="wizard-panel hidden" id="wz-milestones" data-wz-panel="milestones">
+          <p class="text-sm text-muted mb-8">Default 40 / 40 / 20. Amounts track the estimate total. Edit % or $ — running total must match.</p>
+
+          <div class="milestone-match" id="wzMsMatch">
+            <span class="ms-match-ok" id="wzMsMatchOk">✓ Milestones match estimate</span>
+            <span class="ms-match-bad hidden" id="wzMsMatchBad">Amounts don’t match estimate total</span>
+          </div>
+
+          <div class="card" id="wzMilestoneList">
+            <div class="ms-edit" data-ms-idx="0">
+              <div class="ms-edit-head">
+                <div>
+                  <div class="fw-600">Deposit</div>
+                  <div class="text-xs text-muted">First payment</div>
+                </div>
+                <span class="badge badge-deposit">40%</span>
+              </div>
+              <div class="ms-edit-grid">
+                <div class="form-group">
+                  <label>Percent</label>
+                  <div class="input-suffix">
+                    <input class="form-input ms-pct" type="number" min="0" max="100" step="1" value="40" />
+                    <span>%</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Amount</label>
+                  <div class="input-suffix">
+                    <span class="prefix">$</span>
+                    <input class="form-input ms-amt" type="number" min="0" step="0.01" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label>Due trigger</label>
+                <select class="form-select ms-trigger">
+                  <option selected>On estimate accept</option>
+                  <option>On contract signed</option>
+                  <option>On materials ordered</option>
+                  <option>On install start</option>
+                  <option>On install complete</option>
+                  <option>On punch list clear</option>
+                </select>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="ms-edit" data-ms-idx="1">
+              <div class="ms-edit-head">
+                <div>
+                  <div class="fw-600">Progress</div>
+                  <div class="text-xs text-muted">Mid-job payment</div>
+                </div>
+                <span class="badge badge-progress">40%</span>
+              </div>
+              <div class="ms-edit-grid">
+                <div class="form-group">
+                  <label>Percent</label>
+                  <div class="input-suffix">
+                    <input class="form-input ms-pct" type="number" min="0" max="100" step="1" value="40" />
+                    <span>%</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Amount</label>
+                  <div class="input-suffix">
+                    <span class="prefix">$</span>
+                    <input class="form-input ms-amt" type="number" min="0" step="0.01" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label>Due trigger</label>
+                <select class="form-select ms-trigger">
+                  <option>On estimate accept</option>
+                  <option>On contract signed</option>
+                  <option selected>On materials ordered</option>
+                  <option>On install start</option>
+                  <option>On install complete</option>
+                  <option>On punch list clear</option>
+                </select>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="ms-edit" data-ms-idx="2">
+              <div class="ms-edit-head">
+                <div>
+                  <div class="fw-600">Final</div>
+                  <div class="text-xs text-muted">Close-out payment</div>
+                </div>
+                <span class="badge badge-complete">20%</span>
+              </div>
+              <div class="ms-edit-grid">
+                <div class="form-group">
+                  <label>Percent</label>
+                  <div class="input-suffix">
+                    <input class="form-input ms-pct" type="number" min="0" max="100" step="1" value="20" />
+                    <span>%</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Amount</label>
+                  <div class="input-suffix">
+                    <span class="prefix">$</span>
+                    <input class="form-input ms-amt" type="number" min="0" step="0.01" value="0" />
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" style="margin-bottom:0">
+                <label>Due trigger</label>
+                <select class="form-select ms-trigger">
+                  <option>On estimate accept</option>
+                  <option>On contract signed</option>
+                  <option>On materials ordered</option>
+                  <option>On install start</option>
+                  <option selected>On install complete</option>
+                  <option>On punch list clear</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-pad mt-12">
+            <div class="flex-between text-sm">
+              <span class="text-muted">Milestone sum</span>
+              <span class="fw-600" id="wzMsSum">$0.00</span>
+            </div>
+            <div class="flex-between text-sm mt-8">
+              <span class="text-muted">Estimate total</span>
+              <span class="fw-600" id="wzMsEstRef">$0.00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Review -->
+        <div class="wizard-panel hidden" id="wz-review" data-wz-panel="review">
+          <div class="section-label" style="margin-top:0">Client</div>
+          <div class="card card-pad">
+            <div class="flex-between" style="align-items:flex-start">
+              <div style="display:flex;gap:12px;align-items:center">
+                <div class="client-avatar" id="rvAvatar">—</div>
+                <div>
+                  <div class="fw-600" id="rvClientName">—</div>
+                  <div class="text-xs text-muted" id="rvClientMeta">—</div>
+                </div>
+              </div>
+              <a href="#new/client" class="btn btn-ghost btn-sm">Edit</a>
+            </div>
+          </div>
+
+          <div class="section-label">Job</div>
+          <div class="card card-pad">
+            <div class="flex-between" style="align-items:flex-start">
+              <div>
+                <div class="fw-600" id="rvTitle">—</div>
+                <div class="text-xs text-muted mt-8" id="rvType">—</div>
+                <div class="text-sm text-muted mt-8" id="rvSite">—</div>
+                <div class="text-xs text-muted mt-8" id="rvWindow"></div>
+              </div>
+              <a href="#new/details" class="btn btn-ghost btn-sm">Edit</a>
+            </div>
+          </div>
+
+          <div class="section-label">Estimate</div>
+          <div class="card card-pad">
+            <div class="flex-between">
+              <div>
+                <div class="fw-600" id="rvEstTotal">$0.00</div>
+                <div class="text-xs text-muted mt-8" id="rvEstMeta">Blank draft</div>
+              </div>
+              <a href="#new/estimate" class="btn btn-ghost btn-sm">Edit</a>
+            </div>
+          </div>
+
+          <div class="section-label">Milestones</div>
+          <div class="card card-pad" id="rvMilestones">
+            <!-- filled by JS -->
+          </div>
+
+          <div class="co-note-banner mt-12">
+            Creating opens a <strong>draft job</strong> with estimate &amp; milestone plan ready to send.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sticky wizard nav -->
+      <div class="sticky-cta wizard-cta">
+        <div class="btn-row" style="padding:0">
+          <button type="button" class="btn btn-secondary" id="wzBack" hidden>Back</button>
+          <button type="button" class="btn btn-primary" id="wzContinue" disabled>Continue</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== SETTINGS ========== -->
+    <section class="view" id="view-settings" data-view="settings">
+      <header class="topbar teal">
+        <div class="title-block">
+          <h1>Settings</h1>
+          <div class="subtitle">Summit Cabinet &amp; Stone</div>
+        </div>
+      </header>
+      <div class="page-body">
+        <div class="card settings-list">
+          <button type="button" class="set-item" data-toast="Company profile (stub)">
+            <div class="set-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg>
+            </div>
+            <span class="set-label">Company profile</span>
+            <span class="set-value">Edit</span>
+          </button>
+          <div class="divider"></div>
+          <button type="button" class="set-item" data-toast="Default markups: Mat 35% · Labor rates">
+            <div class="set-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <span class="set-label">Markups &amp; rates</span>
+            <span class="set-value">35% mat</span>
+          </button>
+          <div class="divider"></div>
+          <button type="button" class="set-item" data-toast="Stripe Connect linked (prototype)">
+            <div class="set-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg>
+            </div>
+            <span class="set-label">Payments (Stripe)</span>
+            <span class="set-value">Connected</span>
+          </button>
+          <div class="divider"></div>
+          <button type="button" class="set-item" data-toast="Resend domain verified (prototype)">
+            <div class="set-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+            </div>
+            <span class="set-label">Email (Resend)</span>
+            <span class="set-value">Verified</span>
+          </button>
+          <div class="divider"></div>
+          <button type="button" class="set-item" data-toast="Milestone templates: 40/40/20">
+            <div class="set-icon">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+            </div>
+            <span class="set-label">Milestone templates</span>
+            <span class="set-value">40/40/20</span>
+          </button>
+        </div>
+
+        <div class="section-label">Account</div>
+        <div class="card settings-list">
+          <button type="button" class="set-item" id="signOutBtn">
+            <div class="set-icon" style="background:var(--danger-bg);color:var(--danger)">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </div>
+            <span class="set-label" style="color:var(--danger)">Sign out</span>
+          </button>
+        </div>
+        <p class="text-xs text-muted mt-12" style="text-align:center">Summit Invoice MVP prototype · v0.1</p>
+      </div>
+    </section>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav" id="bottomNav" aria-label="Main" hidden>
+      <a href="#dashboard" class="nav-item" data-nav="dashboard">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Dashboard
+      </a>
+      <a href="#jobs" class="nav-item" data-nav="jobs">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Jobs
+      </a>
+      <div class="nav-fab">
+        <a href="#new" class="fab-btn" aria-label="New job">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        </a>
+        <span class="fab-label">New</span>
+      </div>
+      <a href="#clients" class="nav-item" data-nav="clients">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Clients
+      </a>
+    </nav>
+  </div>
+
+  <!-- Change order modal -->
+  <div class="modal-overlay" id="coModal" role="dialog" aria-modal="true" aria-labelledby="coModalTitle">
+    <div class="modal-sheet">
+      <div class="modal-handle" aria-hidden="true"></div>
+      <h2 id="coModalTitle">Add change order</h2>
+      <form id="coForm">
+        <div class="form-group">
+          <label for="coTitle">Title</label>
+          <input class="form-input" id="coTitle" required placeholder="e.g. Extra island seating overhang" value="Extra island seating overhang" />
+        </div>
+        <div class="form-group">
+          <label for="coAmount">Amount ($)</label>
+          <input class="form-input" id="coAmount" type="number" step="0.01" required placeholder="0.00" value="890" />
+        </div>
+        <div class="form-group">
+          <label for="coNotes">Notes</label>
+          <textarea class="form-textarea" id="coNotes" placeholder="What changed and why…">Client wants 12" overhang on island for bar seating. Additional quartz + brackets.</textarea>
+        </div>
+        <p class="form-hint" style="margin-bottom:16px">This will bump the running job total and allocate to upcoming milestones (Progress / Final).</p>
+        <div style="display:flex;gap:10px">
+          <button type="button" class="btn btn-secondary" style="flex:1" id="coCancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1">Save CO</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
